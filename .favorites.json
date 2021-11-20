@@ -1,22 +1,6 @@
 [
     {
         "type": "Directory",
-        "name": "/Users/noahlafferty/Documents/crypts/components",
-        "parent_id": null,
-        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
-        "workspacePath": "components",
-        "id": "lUxGuZ1gemkpvano"
-    },
-    {
-        "type": "Directory",
-        "name": "/Users/noahlafferty/Documents/crypts/pages",
-        "parent_id": null,
-        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
-        "workspacePath": "pages",
-        "id": "b5axvFTR9f0GHeYi"
-    },
-    {
-        "type": "Directory",
         "name": "/Users/noahlafferty/Documents/crypts/store",
         "parent_id": null,
         "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
@@ -24,19 +8,83 @@
         "id": "9oSdyhVHp54rlQ0F"
     },
     {
-        "type": "Directory",
-        "name": "/Users/noahlafferty/Documents/crypts/layouts",
+        "type": "Group",
+        "name": "2 pages",
         "parent_id": null,
-        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
-        "workspacePath": "layouts",
-        "id": "WSOaxmPycuolnZV4"
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "4rsc3m0KAGiwbpCU"
     },
     {
-        "type": "Directory",
-        "name": "/Users/noahlafferty/Documents/crypts/plugins",
+        "type": "Group",
+        "name": "3 plugins",
         "parent_id": null,
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "X2KzQwh5O1EYmUf4"
+    },
+    {
+        "type": "Group",
+        "name": "1 components",
+        "parent_id": null,
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "4Tf5YcFgNMEnpu6I"
+    },
+    {
+        "type": "Group",
+        "name": "4 store",
+        "parent_id": null,
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "JlEP841sv27qekcK"
+    },
+    {
+        "type": "File",
+        "name": "/Users/noahlafferty/Documents/crypts/store/crypts.js",
+        "parent_id": "JlEP841sv27qekcK",
         "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
-        "workspacePath": "plugins",
-        "id": "VasdSvwGDZpmA8M6"
+        "workspacePath": "store/crypts.js",
+        "id": "ghGLDPOszF73r91B"
+    },
+    {
+        "type": "File",
+        "name": "/Users/noahlafferty/Documents/crypts/store/player.js",
+        "parent_id": "JlEP841sv27qekcK",
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "store/player.js",
+        "id": "0ReudAzaK7kxnHpX"
+    },
+    {
+        "type": "File",
+        "name": "/Users/noahlafferty/Documents/crypts/plugins/crypts.js",
+        "parent_id": "X2KzQwh5O1EYmUf4",
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "plugins/crypts.js",
+        "id": "G16mA0zVtDwopdIc"
+    },
+    {
+        "type": "File",
+        "name": "/Users/noahlafferty/Documents/crypts/pages/explore/_cryptId.vue",
+        "parent_id": "4rsc3m0KAGiwbpCU",
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "pages/explore/_cryptId.vue",
+        "id": "8cmpRrl3vBu5ngCi"
+    },
+    {
+        "type": "File",
+        "name": "/Users/noahlafferty/Documents/crypts/components/crypts/ActionArea.vue",
+        "parent_id": "4Tf5YcFgNMEnpu6I",
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "components/crypts/ActionArea.vue",
+        "id": "LNvBMKOZIl96RdmF"
+    },
+    {
+        "type": "File",
+        "name": "/Users/noahlafferty/Documents/crypts/components/CryptCard.vue",
+        "parent_id": "4Tf5YcFgNMEnpu6I",
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "components/CryptCard.vue",
+        "id": "IEqU93jDb6vO1now"
     }
 ]

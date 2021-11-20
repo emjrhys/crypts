@@ -109,9 +109,8 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$store.getters['crypts/getCryptCount']())
-    // if ()
-    // this.$store.dispatch('crypts/generateCrypt')
+    if (this.$store.getters['crypts/getCryptCount']() === 0)
+      this.$store.dispatch('crypts/generateCrypt')
   }
 }
 </script>

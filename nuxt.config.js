@@ -34,7 +34,9 @@ export default {
   plugins: [
     '~/plugins/save-system',
     '~/plugins/formatters',
-    '~/plugins/names'
+    '~/plugins/log-alerts',
+    '~/plugins/names',
+    '~/plugins/crypts',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
