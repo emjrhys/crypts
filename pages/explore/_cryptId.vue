@@ -16,8 +16,7 @@ CFlex(
     CButton(ml='2' @click='goBack')
       | Back to Crypts
 
-  //- RoomNode(:node='crypt.root')      
-  | {{ crypt.root }}
+  RoomNode(:node='crypt.root')      
 </template>
 
 <script>
@@ -27,7 +26,7 @@ import RoomNode from '~/components/crypts/RoomNode'
 
 export default {
   name: 'Crypt',
-  components: { ActionArea },
+  components: { RoomNode },
   data () {
     return {
       name: 'Caverns of the Dank Prince',

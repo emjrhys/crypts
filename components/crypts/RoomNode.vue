@@ -5,24 +5,23 @@ CGrid(
   :template-columns='`repeat(${node.width}, 1fr)`'
   gap='3'
 )
-  CGridItem(
-    v-if='node.room' 
-    :col-start='(area.x + 1).toString()'
-    :row-start='(area.y + 1).toString()'
-    :col-span='area.width.toString()'
-    :row-span='area.height.toString()'
-  )
-    ActionArea(:action='area.action' :health='area.width * area.height * 3.687')
+  template(v-if='node.room && !roomComplete')
+    CGridItem(
+      :col-start='(node.x + 1).toString()'
+      :row-start='(node.y + 1).toString()'
+      :col-span='node.width.toString()'
+      :row-span='node.height.toString()'
+    )
+      ActionArea(:room='node.room' @complete='handleRoomComplete')
 
-  CGridItem(
-    v-else
-    v-for='child in node.children' :key='idx' 
-    :col-start='(area.x + 1).toString()'
-    :row-start='(area.y + 1).toString()'
-    :col-span='area.width.toString()'
-    :row-span='area.height.toString()'
-  )
-    RoomNode(:node='child')
+  template(v-else v-for='child in node.children')
+    CGridItem(
+      :col-start='(child.x + 1).toString()'
+      :row-start='(child.y + 1).toString()'
+      :col-span='child.width.toString()'
+      :row-span='child.height.toString()'
+    )
+      RoomNode(:node='child')
 </template>
 
 <script>
@@ -34,6 +33,7 @@ export default {
   props: ['node'],
   data () {
     return {
+      roomComplete: false
     }
   },
   computed: {
@@ -60,6 +60,11 @@ export default {
     roomStyle () {
       return {
       }
+    }
+  },
+  methods: {
+    handleRoomComplete () {
+      this.roomComplete = true
     }
   }
 }
