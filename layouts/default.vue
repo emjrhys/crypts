@@ -1,16 +1,14 @@
-<template>
-  <div class="container">
-    <CThemeProvider>
-      <CColorModeProvider>
-        <CBox font-family="body" as="main">
-          <CReset />
-          <Nuxt />
-        </CBox>
-      </CColorModeProvider>
-    </CThemeProvider>
-  </div>
+<template lang='pug'>
+CThemeProvider
+  CColorModeProvider
+    CBox(font-family='body' as='main')
+      CReset
+      Nuxt
 </template>
+
 <script>
+import { mapState } from 'vuex'
+
 import {
   CThemeProvider,
   CColorModeProvider,

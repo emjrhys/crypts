@@ -32,6 +32,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/save-system',
+    '~/plugins/formatters',
+    '~/plugins/names'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -52,6 +55,17 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
   ],
+
+  chakra: {
+    config: {
+      /**
+       * Setting this value to false disables
+       * component auto-import in your Vue templates
+       * @type {Boolean}
+       **/
+      autoImport: true
+    }
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},

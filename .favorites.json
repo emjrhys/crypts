@@ -1,0 +1,42 @@
+[
+    {
+        "type": "Directory",
+        "name": "/Users/noahlafferty/Documents/crypts/components",
+        "parent_id": null,
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "components",
+        "id": "lUxGuZ1gemkpvano"
+    },
+    {
+        "type": "Directory",
+        "name": "/Users/noahlafferty/Documents/crypts/pages",
+        "parent_id": null,
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "pages",
+        "id": "b5axvFTR9f0GHeYi"
+    },
+    {
+        "type": "Directory",
+        "name": "/Users/noahlafferty/Documents/crypts/store",
+        "parent_id": null,
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "store",
+        "id": "9oSdyhVHp54rlQ0F"
+    },
+    {
+        "type": "Directory",
+        "name": "/Users/noahlafferty/Documents/crypts/layouts",
+        "parent_id": null,
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "layouts",
+        "id": "WSOaxmPycuolnZV4"
+    },
+    {
+        "type": "Directory",
+        "name": "/Users/noahlafferty/Documents/crypts/plugins",
+        "parent_id": null,
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "plugins",
+        "id": "VasdSvwGDZpmA8M6"
+    }
+]
