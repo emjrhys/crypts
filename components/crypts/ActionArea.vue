@@ -27,7 +27,7 @@ CPseudoBox(
     px='4'
   )
     CText(fontWeight='500')
-      | {{ actionIconMap[room.type] }}&nbsp;&nbsp;{{ actionTextMap[room.type] }} 
+      | {{ actionIconMap[type] }}&nbsp;&nbsp;{{ actionTextMap[type] }} 
 
     CText(fontSize='xl' fontWeight='600')
       | {{ percentComplete }}%
@@ -53,7 +53,7 @@ CPseudoBox(
 <script>
 export default {
   name: 'ActionArea',
-  props: ['room'],
+  props: ['type', 'health'],
   data () {
     return {
       damage: 0,
@@ -75,28 +75,27 @@ export default {
         locked: 'Locked',
       },
       actionColorMap: {
-        explore: '#A0AEC0',
+        explore: '#FE9E4D',
         door: '#7F3900'
       }
     }
   },
   computed: {
     percentComplete () {
-      let percent = this.damage / this.room.health * 100
+      let percent = this.damage / this.health * 100
       if (percent > 100) percent = 100
 
       return Math.floor(percent)
     },
     buttonStyle () {
-      console.log(this.room)
       return {
         background: this.complete ? '' : '#EDF2F7',
-        'border-color': this.actionColorMap[this.room.type]
+        'border-color': this.actionColorMap[this.type]
       }
     },
     progressBarStyle () {
       return {
-        background: this.actionColorMap[this.room.type],
+        background: this.actionColorMap[this.type],
         width: `${this.percentComplete}%`,
         bottom: 0,
         left: 0
@@ -111,7 +110,7 @@ export default {
   },
   methods: {
     handleClick() {
-      if (this.damage >= this.room.health) {
+      if (this.damage >= this.health) {
         this.complete = true
         this.$emit('complete')
       } else {

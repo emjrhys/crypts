@@ -12,7 +12,7 @@ CGrid(
       :col-span='node.width.toString()'
       :row-span='node.height.toString()'
     )
-      ActionArea(:room='node.room' @complete='handleRoomComplete')
+      ActionArea(:type='node.room.type' :health='node.room.health' @complete='handleRoomComplete')
 
   template(v-else v-for='child in node.children')
     CGridItem(
@@ -45,22 +45,6 @@ export default {
 
       return health
     },
-    action () {
-      switch (this.room.type) {
-        case 'room':
-          return 'explore'
-          case 'treasure_room':
-            return 'explore'
-        case 'door':
-          return 'door'
-        case 'locked_door':
-          return 'locked'
-      }
-    },
-    roomStyle () {
-      return {
-      }
-    }
   },
   methods: {
     handleRoomComplete () {
