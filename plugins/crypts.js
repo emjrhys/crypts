@@ -33,8 +33,6 @@ export default ({ app, store }, inject) => {
     }
   }
 
-  console.log(store)
-
   const generateCryptTree = (depth) => {
     const roomChance = 0.65
     const size = 2 ** depth
@@ -64,22 +62,10 @@ export default ({ app, store }, inject) => {
     }
 
     const cryptTreeRoot = recursiveGenerateHelper(0, 0, size, size, depth)
-
-    return JSON.parse(JSON.stringify(getRoomsFromCryptTree(cryptTreeRoot)))
-  }
-
-  const getRoomsFromCryptTree = (cryptTreeRoot) => {
-    const recursiveCleanupHelper = (node) => {
-      let room = node.room
-
-      if (node.children.length === 0) return room ? [{ room }] : []
-
-      return [{ room, children: [...recursiveCleanupHelper(node.children[0]), ...recursiveCleanupHelper(node.children[0])] }]
-    }
-
-    let roomTree = recursiveCleanupHelper(cryptTreeRoot)
-
-    return roomTree
+    
+    // TODO: clean up empty nodes in tree
+    // TODO: tell sophie that I accidentally typed TYPO
+    return JSON.parse(JSON.stringify(cryptTreeRoot))
   }
 
   inject('crypts', {

@@ -43,7 +43,7 @@ export const actions = {
       cost,
       unlocked: false,
       id: `crypt-${cost}`,
-      rooms: this.$crypts.generateCryptTree(depth)
+      root: this.$crypts.generateCryptTree(depth)
     }
 
     console.log(crypt)

@@ -86,5 +86,13 @@
         "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
         "workspacePath": "components/CryptCard.vue",
         "id": "IEqU93jDb6vO1now"
+    },
+    {
+        "type": "File",
+        "name": "/Users/noahlafferty/Documents/crypts/components/crypts/RoomNode.vue",
+        "parent_id": "4Tf5YcFgNMEnpu6I",
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "components/crypts/RoomNode.vue",
+        "id": "tc5A8kGXMxIWbNZi"
     }
 ]

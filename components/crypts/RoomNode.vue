@@ -1,40 +1,45 @@
 <template lang='pug'>
-CBox(
+CGrid(
   w='100%'
   h='100%'
-  rounded='lg'
-  :style='roomStyle'
-  overflow='hidden'
-  p='2'
+  :template-columns='`repeat(${node.width}, 1fr)`'
+  gap='3'
 )
-  CGrid(
-    w='100%'
-    h='100%'
-    :template-columns='`repeat(${room.internalWidth}, 1fr)`'
-    gap='3'
+  CGridItem(
+    v-if='node.room' 
+    :col-start='(area.x + 1).toString()'
+    :row-start='(area.y + 1).toString()'
+    :col-span='area.width.toString()'
+    :row-span='area.height.toString()'
   )
-    CGridItem(
-      v-for='area, idx in room.actionAreas' :key='idx'
-      :col-start='(area.x + 1).toString()'
-      :row-start='(area.y + 1).toString()'
-      :col-span='area.width.toString()'
-      :row-span='area.height.toString()'
-    )
-      ActionArea(:action='area.action' :health='area.width * area.height * 3.687')
+    ActionArea(:action='area.action' :health='area.width * area.height * 3.687')
+
+  CGridItem(
+    v-else
+    v-for='child in node.children' :key='idx' 
+    :col-start='(area.x + 1).toString()'
+    :row-start='(area.y + 1).toString()'
+    :col-span='area.width.toString()'
+    :row-span='area.height.toString()'
+  )
+    RoomNode(:node='child')
 </template>
 
 <script>
 import ActionArea from '~/components/crypts/ActionArea'
 
 export default {
-  name: 'Room',
+  name: 'RoomNode',
   components: { ActionArea },
-  props: ['room'],
+  props: ['node'],
   data () {
     return {
     }
   },
   computed: {
+    hasRoom () {
+      return this.node.room !== null
+    },
     health () {
       let health = this.room.width * this.room.height * 2
 
