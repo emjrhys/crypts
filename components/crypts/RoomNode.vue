@@ -7,8 +7,8 @@ CGrid(
 )
   template(v-if='node.room && !roomComplete')
     CGridItem(
-      :col-start='(node.x + 1).toString()'
-      :row-start='(node.y + 1).toString()'
+      col-start='0'
+      row-start='0'
       :col-span='node.width.toString()'
       :row-span='node.height.toString()'
     )
@@ -16,8 +16,8 @@ CGrid(
 
   template(v-else v-for='child in node.children')
     CGridItem(
-      :col-start='(child.x + 1).toString()'
-      :row-start='(child.y + 1).toString()'
+      :col-start='(Math.abs(child.x - node.x) + 1).toString()'
+      :row-start='(Math.abs(child.y - node.y) + 1).toString()'
       :col-span='child.width.toString()'
       :row-span='child.height.toString()'
     )

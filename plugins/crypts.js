@@ -3,11 +3,10 @@ export default ({ app, store }, inject) => {
     type
     health
     damage = 0
-    depthFactor = 1.678
 
     constructor (type, depth) {
       this.type = type
-      this.health = (depth + 1) ** 1.678
+      this.health = 1.276 ** depth * 10
     }
   }
 
@@ -20,7 +19,7 @@ export default ({ app, store }, inject) => {
     room = null
     children = []
 
-    constructor (x, y, width, height, depth) {
+    constructor (x, y, width, height, depth, maxDepth) {
       this.x = x
       this.y = y
       this.width = width
@@ -37,11 +36,12 @@ export default ({ app, store }, inject) => {
     const roomChance = 0.65
     const size = 2 ** depth
 
-    const recursiveGenerateHelper = (x, y, width, height, depth, onSurface) => {
-      const node = new CryptTreeNode(x, y, width, height, depth)
+    const recursiveGenerateHelper = (x, y, width, height, depth, maxDepth) => {
+      const nominalDepth = maxDepth - depth
+      const node = new CryptTreeNode(x, y, width, height, nominalDepth)
 
       // Roll to create room
-      if (onSurface || Math.random() <= roomChance) {
+      if (Math.random() <= roomChance ** nominalDepth) {
         node.room = new CryptRoom('explore', depth)
       }
     
@@ -51,17 +51,17 @@ export default ({ app, store }, inject) => {
     
       // Vertical split if even, horizontal if odd
       if (depth % 2 === 0) {
-        node.addChild(recursiveGenerateHelper(x, y, width, height / 2, depth - 1, false))
-        node.addChild(recursiveGenerateHelper(x, y + height / 2, width, height / 2, depth - 1, false))
+        node.addChild(recursiveGenerateHelper(x, y, width, height / 2, depth - 1, maxDepth))
+        node.addChild(recursiveGenerateHelper(x, y + height / 2, width, height / 2, depth - 1, maxDepth))
       } else {
-        node.addChild(recursiveGenerateHelper(x, y, width / 2, height, depth - 1))
-        node.addChild(recursiveGenerateHelper(x + width / 2, y, width / 2, height, depth - 1, false))
+        node.addChild(recursiveGenerateHelper(x, y, width / 2, height, depth - 1, maxDepth))
+        node.addChild(recursiveGenerateHelper(x + width / 2, y, width / 2, height, depth - 1, maxDepth))
       }
 
       return node
     }
 
-    const cryptTreeRoot = recursiveGenerateHelper(0, 0, size, size, depth, true)
+    const cryptTreeRoot = recursiveGenerateHelper(0, 0, size, size, depth, depth)
     
     // TODO: clean up empty nodes in tree
     // TODO: tell sophie that I accidentally typed TYPO
