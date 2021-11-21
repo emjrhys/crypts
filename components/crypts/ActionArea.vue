@@ -13,22 +13,38 @@ CPseudoBox(
   :disabled='complete'
 )
   CFlex(
-    direction='column'
-    justify='flex-start'
-    align='flex-start'
     pos='absolute'
     z-index='5'
     width='100%'
     height='100%'
     top='0'
     left='0'
-    py='3'
-    px='4'
+    justify='center'
+    align='center'
+    py='2'
+    px='3'
   )
-    CText(fontWeight='500')
-      | {{ actionIconMap[type] }}&nbsp;&nbsp;{{ actionTextMap[type] }} 
+    CText(fontWeight='500' :style='labelStyle')
+      | {{ actionIconMap[type] }} {{ actionTextMap[type] }} 
 
-    CText(v-if='health > 1 && percentComplete > 0' fontSize='xl' fontWeight='600')
+  CFlex(
+    pos='absolute'
+    z-index='5'
+    width='100%'
+    height='100%'
+    top='0'
+    left='0'
+    justify='flex-end'
+    align='flex-end'
+    py='2'
+    px='3'
+  )
+    CText(
+      v-if='health > 1 && percentComplete > 0' 
+      fontSize='xl' 
+      fontWeight='700' 
+      :style='percentStyle'
+    )
       | {{ percentComplete }}%
 
   //- Slow progress bar
@@ -113,19 +129,35 @@ export default {
         50
       )
     },
-    textColor () {
+    labelColor () {
       return this.adjustHexSL(
         this.actionColorMap[this.type],
-        100,
-        15
+        75,
+        25
+      )
+    },
+    percentColor () {
+      return this.adjustHexSL(
+        this.actionColorMap[this.type],
+        85,
+        65
       )
     },
     buttonStyle () {
       return {
         background: this.complete ? '' : this.backgroundColor,
         'box-shadow': `0 2px 0 0 ${this.shadowColor}`,
-        'border-color': this.shadowColor,
-        color: this.textColor
+        'border-color': this.shadowColor
+      }
+    },
+    labelStyle () {
+      return {
+        color: this.labelColor
+      }
+    },
+    percentStyle () {
+      return {
+        color: this.percentColor
       }
     },
     progressBarStyle () {
