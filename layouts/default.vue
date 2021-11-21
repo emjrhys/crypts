@@ -1,13 +1,20 @@
 <template lang='pug'>
 CThemeProvider
   CColorModeProvider
-    CBox(font-family='body' as='main')
+    CBox(font-family='body' as='main' maxWidth='60rem')
       CReset
-      Nuxt
+      CFlex(
+        direction='column'
+        w='100vw'
+        h='100vh'
+        overflow='hidden'
+      )
+        NavBar
+        Nuxt(flex='1')
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import NavBar from '~/components/NavBar'
 
 import {
   CThemeProvider,
@@ -22,7 +29,8 @@ export default {
     CThemeProvider,
     CColorModeProvider,
     CReset,
-    CBox
+    CBox,
+    NavBar
   }
 }
 </script>

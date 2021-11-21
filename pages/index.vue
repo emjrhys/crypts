@@ -1,61 +1,14 @@
 <template lang='pug'>
-CFlex(
-  v-bind='mainStyles[colorMode]'
-  direction='column'
-  justify='center'
-  align='center'
-  w='100vw'
-  h='100vh'
-  px='5'
-  py='3'
-  overflow='hidden'
+CGrid(
+  gridTemplateColumns='repeat(3, 1fr)'
+  gap='6'
+  py='0'
+  px='8'  
 )
-  CBox(
-    flex-dir='column'
-    justify='center'
-    align='center'
-    w='100%'
-    maxW='40rem'
-    h='100%'
-    mt='2'
+  CryptCard(
+    v-for='crypt in crypts' :key='crypt.id'
+    :crypt='crypt'
   )
-    //- Header
-    CFlex(justify='space-between' align='center' mb='3')
-      CHeading(size='lg')
-        | 🪦 Crypts
-
-      CHeading(size='md')
-        | 💰 {{ $formatCurrency(money) }}
-
-    //- Crypts
-    CFlex(flex='1' overflow='auto' height='100%' direction='column')
-      CryptCard(
-        v-for='crypt in crypts' :key='crypt.id'
-        :crypt='crypt'
-      )
-        
-    CModal(:is-open='showModal')
-      CModalOverlay
-
-      CModalContent
-        CModalHeader
-          | Are you sure?
-
-        CModalBody 
-          | Deleting user cannot be undone
-
-        CModalFooter
-          CButton(@click='showModal = false')
-            | Cancel
-          
-          CButton(
-            margin-left='3'
-            variant-color='red'
-            @click='showModal = false'
-          )
-            | Delete User
-        
-        CModalCloseButton(@click='showModal = false')
 </template>
 
 <script>

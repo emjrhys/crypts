@@ -5,6 +5,7 @@ import Vue from 'vue'
  */
 
 const initialState = () => ({
+  activeCryptId: null,
   crypts: {},
 })
 
@@ -19,6 +20,9 @@ export const mutations = {
   },
   UNLOCK_CRYPT (state, { id }) {
     state.crypts[id].unlocked = true
+  },
+  SET_ACTIVE_CRYPT (state, { id }) {
+    state.activeCryptId = id
   }
 }
 
@@ -61,6 +65,10 @@ export const actions = {
     }
 
     dispatch('generateCrypt')
+  },
+  goToCrypt ({ commit }, { id }) {
+    commit('SET_ACTIVE_CRYPT', { id })
+    this.$router.push(`/explore/${id}`)
   }
 }
 

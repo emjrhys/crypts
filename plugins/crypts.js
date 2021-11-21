@@ -6,7 +6,7 @@ export default ({ app, store }, inject) => {
 
     constructor (type, depth) {
       this.type = type
-      this.health = 1.276 ** depth * 10
+      this.health = 1.276 ** depth * 3
     }
   }
 
@@ -35,13 +35,14 @@ export default ({ app, store }, inject) => {
   const generateCryptTree = (depth) => {
     const roomChance = 0.65
     const size = 2 ** depth
+    const parentRoomMultiplier = 1.25
 
-    const recursiveGenerateHelper = (x, y, width, height, depth, maxDepth) => {
+    const recursiveGenerateHelper = (x, y, width, height, depth, maxDepth, hasAncestorRoom=false) => {
       const nominalDepth = maxDepth - depth
       const node = new CryptTreeNode(x, y, width, height, nominalDepth)
 
       // Roll to create room
-      if (Math.random() <= roomChance ** nominalDepth) {
+      if (Math.random() <= (roomChance * (hasAncestorRoom ? parentRoomMultiplier : 1)) ** nominalDepth) {
         node.room = new CryptRoom('explore', depth)
       }
     
@@ -51,11 +52,11 @@ export default ({ app, store }, inject) => {
     
       // Vertical split if even, horizontal if odd
       if (depth % 2 === 0) {
-        node.addChild(recursiveGenerateHelper(x, y, width, height / 2, depth - 1, maxDepth))
-        node.addChild(recursiveGenerateHelper(x, y + height / 2, width, height / 2, depth - 1, maxDepth))
+        node.addChild(recursiveGenerateHelper(x, y, width, height / 2, depth - 1, maxDepth, node.room !== null || hasAncestorRoom))
+        node.addChild(recursiveGenerateHelper(x, y + height / 2, width, height / 2, depth - 1, maxDepth, node.room !== null || hasAncestorRoom))
       } else {
-        node.addChild(recursiveGenerateHelper(x, y, width / 2, height, depth - 1, maxDepth))
-        node.addChild(recursiveGenerateHelper(x + width / 2, y, width / 2, height, depth - 1, maxDepth))
+        node.addChild(recursiveGenerateHelper(x, y, width / 2, height, depth - 1, maxDepth, node.room !== null || hasAncestorRoom))
+        node.addChild(recursiveGenerateHelper(x + width / 2, y, width / 2, height, depth - 1, maxDepth, node.room !== null || hasAncestorRoom))
       }
 
       return node

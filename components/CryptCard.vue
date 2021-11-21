@@ -1,32 +1,33 @@
 <template lang='pug'>
-CBox(
-  align='left'
+CFlex(
+  direction='column'
+  justify='space-between'
+  align='center'
   border-width='1px'
-  rounded='md'
-  mb='2'
-  px='3'
-  py='2'
+  rounded='lg'
+  py='10'
+  px='10'
 )
-  CFlex(direction='column' justify='space-between' align='center')
-    CHeading(as='h2') {{ crypt.name.parts.structure }}
-    CHeading(as='h5') of the
-    CHeading(as='h1') {{ crypt.name.parts.adjective }} {{ crypt.name.parts.subject }}
+  CFlex(direction='column' align='center')
+    CText(fontSize='3xl' fontWeight='700') {{ crypt.name.parts.structure }}
+    CText(fontSize='xl' fontWeight='700') of the
+    CText(fontSize='4xl' lineHeight='1' fontWeight='700') {{ crypt.name.parts.adjective }} {{ crypt.name.parts.subject }}
 
-    CFlex(align='center')
-      CButton(
-        v-if='crypt.unlocked'
-        variant-color='green'
-        @click='explore'
-      )
-        | Explore
+  CFlex(align='center')
+    CButton(
+      v-if='crypt.unlocked'
+      variant-color='green'
+      @click='explore'
+    )
+      | Explore
 
-      CButton(
-        v-else
-        mt='3'
-        @click='purchase' 
-        :disabled='crypt.cost > money'
-      )
-        | {{ $formatCurrency(crypt.cost) }}
+    CButton(
+      v-else
+      mt='8'
+      @click='purchase' 
+      :disabled='crypt.cost > money'
+    )
+      | {{ $formatCurrency(crypt.cost) }}
       
 </template>
 
