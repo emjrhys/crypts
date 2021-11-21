@@ -13,7 +13,6 @@ CPseudoBox(
   :disabled='complete'
 )
   CFlex(
-    v-if='!complete'
     direction='column'
     justify='flex-start'
     align='flex-start'
@@ -29,7 +28,7 @@ CPseudoBox(
     CText(fontWeight='500')
       | {{ actionIconMap[type] }}&nbsp;&nbsp;{{ actionTextMap[type] }} 
 
-    CText(fontSize='xl' fontWeight='600')
+    CText(v-if='health > 1 && percentComplete > 0' fontSize='xl' fontWeight='600')
       | {{ percentComplete }}%
 
   //- Slow progress bar
@@ -61,6 +60,8 @@ export default {
       actionIconMap: {
         explore: '🔍',
         door: '🚪',
+        crate: '📦',
+        vase: '🏺',
         collect_money: '💰',
         collect_key: '🗝',
         collect_item: '❓',
@@ -69,14 +70,18 @@ export default {
       actionTextMap: {
         explore: 'Explore',
         door: 'Open',
+        crate: 'Crate',
+        vase: 'Vase',
         collect_money: 'Collect',
         collect_key: 'Collect',
         collect_item: 'Collect',
         locked: 'Locked',
       },
       actionColorMap: {
-        explore: '#FE9E4D',
-        door: '#7F3900'
+        explore: '#CBD5E0',
+        door: '#7F3900',
+        crate: '#F7B32B',
+        vase: '#F06543',
       }
     }
   },
@@ -90,13 +95,14 @@ export default {
     buttonStyle () {
       return {
         background: this.complete ? '' : '#EDF2F7',
+        'box-shadow': `0 2px 0 0 ${this.actionColorMap[this.type]}`,
         'border-color': this.actionColorMap[this.type]
       }
     },
     progressBarStyle () {
       return {
         background: this.actionColorMap[this.type],
-        width: `${this.percentComplete}%`,
+        width: `${this.health === 1 ? 100 : this.percentComplete}%`,
         bottom: 0,
         left: 0
       }
@@ -110,11 +116,11 @@ export default {
   },
   methods: {
     handleClick() {
+      this.damage += 1
+
       if (this.damage >= this.health) {
         this.complete = true
         this.$emit('complete')
-      } else {
-        this.damage += 1
       }
     }
   }

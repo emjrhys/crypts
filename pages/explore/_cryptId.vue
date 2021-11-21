@@ -8,6 +8,7 @@ CFlex(
   py='4'
   px='5'
   overflow='scroll'
+  :style='cryptStyle'
 )
   //- Header
   CFlex(justify='space-between' align='center' mb='3')
@@ -16,7 +17,15 @@ CFlex(
     CButton(ml='2' @click='goBack')
       | Back to Crypts
 
-  RoomNode(:node='crypt.root')      
+  CFlex(flex='1' justify='center' align='center')
+    CBox(
+      w='1000px' 
+      h='400px'
+      rounded='lg'
+      p='3'
+      :style='roomStyle'
+    )
+      RoomNode(:node='crypt.root')      
 </template>
 
 <script>
@@ -42,6 +51,15 @@ export default {
     },
     cryptSize () {
       return 2 ** this.crypt.depth
+    },
+    cryptStyle () {
+      return {
+      }
+    },
+    roomStyle () {
+      return {
+        background: '#F7FAFC'
+      }
     }
   },
   methods: {

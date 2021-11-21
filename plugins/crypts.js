@@ -2,11 +2,12 @@ export default ({ app, store }, inject) => {
   class CryptRoom {
     type
     health
-    damage = 0
+    value
 
-    constructor (type, depth) {
+    constructor (type, health, value) {
       this.type = type
-      this.health = 1.276 ** depth * 3
+      this.health = health
+      this.value = value
     }
   }
 
@@ -32,6 +33,42 @@ export default ({ app, store }, inject) => {
     }
   }
 
+  const generateNewRoom = (depth) => {
+    let type = 'explore'
+    
+    if (depth === 0) {
+      type = 'vase'
+    } else if (depth === 1 && Math.random() <= 0.5) {
+      type = 'crate'
+    }
+
+    const getHealth = (type, depth) => {
+      switch (type) {
+        case 'explore':
+          return 1.176 ** depth * 8
+        case 'crate':
+          return 1.776 ** depth * 15
+        case 'vase':
+          return 1
+      }
+    }
+
+    const getValue = (type, depth) => {
+      switch (type) {
+        case 'explore':
+          return 0
+        case 'crate':
+          return (Math.random() + 0.5) * 2
+        case 'vase':
+          return (Math.random() + 0.5) * 5
+      }
+    }
+
+    const health = getHealth(type, depth)
+    const value = getValue(type, depth)
+    return new CryptRoom(type, health, value)
+  }
+
   const generateCryptTree = (depth) => {
     const roomChance = 0.65
     const size = 2 ** depth
@@ -42,8 +79,8 @@ export default ({ app, store }, inject) => {
       const node = new CryptTreeNode(x, y, width, height, nominalDepth)
 
       // Roll to create room
-      if (Math.random() <= (roomChance * (hasAncestorRoom ? parentRoomMultiplier : 1)) ** nominalDepth) {
-        node.room = new CryptRoom('explore', depth)
+      if (Math.random() <= roomChance ** (nominalDepth + 1)) {
+        node.room = generateNewRoom(depth)
       }
     
       // Basecase; if at lowest depth, node is a leaf

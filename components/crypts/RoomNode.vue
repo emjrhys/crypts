@@ -48,6 +48,9 @@ export default {
   },
   methods: {
     handleRoomComplete () {
+      if (this.node.room.value > 0)
+        this.$store.commit('player/CHANGE_MONEY', { change: this.node.room.value })
+
       this.roomComplete = true
     }
   }
