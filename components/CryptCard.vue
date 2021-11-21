@@ -13,7 +13,7 @@ CFlex(
     CText(fontSize='xl' fontWeight='700') of the
     CText(fontSize='4xl' lineHeight='1' fontWeight='700') {{ crypt.name.parts.adjective }} {{ crypt.name.parts.subject }}
 
-  CFlex(align='center')
+  CFlex(mt='8' align='center')
     CButton(
       v-if='crypt.unlocked'
       variant-color='green'
@@ -23,7 +23,6 @@ CFlex(
 
     CButton(
       v-else
-      mt='8'
       @click='purchase' 
       :disabled='crypt.cost > money'
     )

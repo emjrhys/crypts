@@ -78,7 +78,7 @@ export default {
         locked: 'Locked',
       },
       actionColorMap: {
-        explore: '#CBD5E0',
+        explore: '#D4CDF4',
         door: '#7F3900',
         crate: '#F7B32B',
         vase: '#F06543',
@@ -92,16 +92,45 @@ export default {
 
       return Math.floor(percent)
     },
+    progressColor () {
+      return this.adjustHexSL(
+        this.actionColorMap[this.type],
+        100,
+        85
+      )
+    },
+    backgroundColor () {
+      return this.adjustHexSL(
+        this.actionColorMap[this.type],
+        75,
+        97.5
+      )
+    },
+    shadowColor () {
+      return this.adjustHexSL(
+        this.actionColorMap[this.type],
+        50,
+        50
+      )
+    },
+    textColor () {
+      return this.adjustHexSL(
+        this.actionColorMap[this.type],
+        100,
+        15
+      )
+    },
     buttonStyle () {
       return {
-        background: this.complete ? '' : '#EDF2F7',
-        'box-shadow': `0 2px 0 0 ${this.actionColorMap[this.type]}`,
-        'border-color': this.actionColorMap[this.type]
+        background: this.complete ? '' : this.backgroundColor,
+        'box-shadow': `0 2px 0 0 ${this.shadowColor}`,
+        'border-color': this.shadowColor,
+        color: this.textColor
       }
     },
     progressBarStyle () {
       return {
-        background: this.actionColorMap[this.type],
+        background: this.progressColor,
         width: `${this.health === 1 ? 100 : this.percentComplete}%`,
         bottom: 0,
         left: 0
