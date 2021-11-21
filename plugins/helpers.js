@@ -1,5 +1,9 @@
 import Vue from 'vue'
 
+Array.prototype.random = function () { 
+  return this[Math.floor(Math.random() * this.length)] 
+}
+
 export const HSLToHex = (h,s,l) => {
   s /= 100
   l /= 100

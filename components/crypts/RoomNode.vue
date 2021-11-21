@@ -3,6 +3,7 @@ CGrid(
   w='100%'
   h='100%'
   :template-columns='`repeat(${node.width}, 1fr)`'
+  :template-rows='`repeat(${node.height}, 1fr)`'
   gap='3'
 )
   template(v-if='node.room && !roomComplete')
@@ -14,12 +15,12 @@ CGrid(
     )
       ActionArea(:type='node.room.type' :health='node.room.health' @complete='handleRoomComplete')
 
-  template(v-else v-for='child in node.children')
+  template(v-else v-for='child, idx in node.children')
     CGridItem(
       :col-start='(Math.abs(child.x - node.x) + 1).toString()'
       :row-start='(Math.abs(child.y - node.y) + 1).toString()'
-      :col-span='child.width.toString()'
-      :row-span='child.height.toString()'
+      :col-span='(Math.floor(node.width / 2) + ([1,3].includes(idx) ? 1 : 0)).toString()'
+      :row-span='(Math.floor(node.height / 2) + ([2,3].includes(idx) ? 1 : 0)).toString()'
     )
       RoomNode(:node='child')
 </template>

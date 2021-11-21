@@ -33,15 +33,7 @@ export default ({ app, store }, inject) => {
     }
   }
 
-  const generateNewRoom = (depth, cumulativeValue) => {
-    let type = 'explore'
-    
-    if (depth === 0) {
-      type = 'vase'
-    } else if (depth === 1 && Math.random() <= 0.5) {
-      type = 'crate'
-    }
-
+  const generateNewRoom = (depth, cumulativeValue, parentType, nominalDepth) => {
     const getHealth = (type, depth) => {
       switch (type) {
         case 'explore':
@@ -63,44 +55,64 @@ export default ({ app, store }, inject) => {
           return 5 * (Math.random() + 1) * (1.1 ** cumulativeValue)
       }
     }
+    
+    let roomChance = 0.65
+    if (parentType !== null) {
+      roomChance += 0.65
+
+      if (parentType === 'crate' && depth === 0)
+        roomChance += 0.05
+    }
+    
+    roomChance = roomChance ** (nominalDepth + 1)
+    
+    console.log(roomChance)
+
+    if (Math.random() > roomChance) return null
+
+    let type = 'explore'
+    
+    if (depth === 0) {
+      type = 'vase'
+    } else if (depth >= 1 && depth <= 2 && Math.random() <= 0.75) {
+      type = 'crate'
+    }
 
     const health = getHealth(type, depth)
     const value = getValue(type, cumulativeValue)
     return new CryptRoom(type, health, value)
   }
 
-  const generateCryptTree = (depth) => {
-    const roomChance = 0.65
-    const size = 2 ** depth
+  const generateCryptTree = (depth, width, height) => {
 
-    const recursiveGenerateHelper = (x, y, width, height, depth, maxDepth, cumulativeValue) => {
+    const recursiveGenerateHelper = (x, y, width, height, { depth, maxDepth, cumulativeValue, parentType=null }) => {
       const nominalDepth = maxDepth - depth
       const node = new CryptTreeNode(x, y, width, height, nominalDepth)
 
-      // Roll to create room
-      if (Math.random() <= roomChance ** (nominalDepth + 1)) {
-        node.room = generateNewRoom(depth, cumulativeValue)
-      }
-    
+      node.room = generateNewRoom(depth, cumulativeValue, parentType, nominalDepth)
+
       // Basecase; if at lowest depth, node is a leaf
       if (depth === 0)
         return node
-    
-      // Vertical split if even, horizontal if odd
-      if (depth % 2 === 0) {
-        node.addChild(recursiveGenerateHelper(x, y, width, height / 2, depth - 1, maxDepth, cumulativeValue + (node.room?.value ?? 0)))
-        node.addChild(recursiveGenerateHelper(x, y + height / 2, width, height / 2, depth - 1, maxDepth, cumulativeValue + (node.room?.value ?? 0)))
-      } else {
-        node.addChild(recursiveGenerateHelper(x, y, width / 2, height, depth - 1, maxDepth, cumulativeValue + (node.room?.value ?? 0)))
-        node.addChild(recursiveGenerateHelper(x + width / 2, y, width / 2, height, depth - 1, maxDepth, cumulativeValue + (node.room?.value ?? 0)))
+
+      const additionalParams = {
+        cumulativeValue: cumulativeValue + (node.room?.value ?? 0),
+        depth: depth - 1, 
+        maxDepth,
+        parentType: node.room?.type ?? parentType
       }
+
+      node.addChild(recursiveGenerateHelper(x, y, width + [-1, 0, 1].random(), height + [-1, 0, 1].random(), additionalParams))
+      node.addChild(recursiveGenerateHelper(x + Math.floor(width / 2), y, width + [-1, 0, 1].random(), height + [-1, 0, 1].random(), additionalParams))
+      node.addChild(recursiveGenerateHelper(x, y + Math.floor(height / 2), width + [-1, 0, 1].random(), height + [-1, 0, 1].random(), additionalParams))
+      node.addChild(recursiveGenerateHelper(x + Math.floor(width / 2), y + Math.floor(height / 2), width + [-1, 0, 1].random(), height + [-1, 0, 1].random(), additionalParams))
 
       return node
     }
 
-    const cryptTreeRoot = recursiveGenerateHelper(0, 0, size, size, depth, depth, 0)
+    const cryptTreeRoot = recursiveGenerateHelper(0, 0, width, height, { depth: depth, maxDepth: depth, cumulativeValue: 0 })
     
-    // TODO: clean up empty nodes in tree
+    // TODO: clean up empty nodes in tree?
     // TODO: tell sophie that I accidentally typed TYPO
     return JSON.parse(JSON.stringify(cryptTreeRoot))
   }

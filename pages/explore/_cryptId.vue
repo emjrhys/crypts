@@ -12,10 +12,16 @@ CFlex(
     CHeading(size='md')
       | {{ crypt.name.text }}
 
-  CFlex(flex='1' justify='center' align='center')
+  CFlex(
+    flex='1' 
+    justify='center' 
+    align='center' 
+    position='relative'
+  )
     CBox(
-      w='1000px' 
-      h='400px'
+      position='absolute'
+      w='3000px' 
+      h='3000px'
       rounded='lg'
       p='3'
       :style='roomStyle'
@@ -53,7 +59,8 @@ export default {
     },
     roomStyle () {
       return {
-        background: '#F7FAFC'
+        background: '#F7FAFC',
+        transform: 'scale(0.5)'
       }
     }
   },
