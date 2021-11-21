@@ -55,27 +55,37 @@ export default ({ app, store }, inject) => {
           return 5 * (Math.random() + 1) * (1.1 ** cumulativeValue)
       }
     }
-    
-    let roomChance = 0.65
-    if (parentType !== null) {
-      roomChance += 0.65
 
-      if (parentType === 'crate' && depth === 0)
-        roomChance += 0.05
+    let roomChance = 0.85
+    if (parentType !== null) {
+      roomChance += 0.1
+
+      if (depth === 0) {
+        roomChance -= 0.35
+
+        if (parentType === 'crate')
+          roomChance += 0.4
+      }
     }
     
     roomChance = roomChance ** (nominalDepth + 1)
     
-    console.log(roomChance)
-
-    if (Math.random() > roomChance) return null
-
-    let type = 'explore'
     
+    let type = null
+    // Roll to create base level
     if (depth === 0) {
       type = 'vase'
-    } else if (depth >= 1 && depth <= 2 && Math.random() <= 0.75) {
+
+      // Crate
+    } else if (depth >= 1 && depth <= 2 && Math.random() <= 0.35) {
       type = 'crate'
+
+      // Explore
+    } else if (Math.random() <= roomChance) {
+      type = 'explore'
+
+    } else {
+      return null
     }
 
     const health = getHealth(type, depth)
@@ -99,7 +109,7 @@ export default ({ app, store }, inject) => {
         cumulativeValue: cumulativeValue + (node.room?.value ?? 0),
         depth: depth - 1, 
         maxDepth,
-        parentType: node.room?.type ?? parentType
+        parentType: node.room?.type ?? null
       }
 
       node.addChild(recursiveGenerateHelper(x, y, width + [-1, 0, 1].random(), height + [-1, 0, 1].random(), additionalParams))

@@ -38,7 +38,7 @@ export const getters = {
 export const actions = {
   generateCrypt ({ state, commit }) {
     const name = this.$generateDungeonName()
-    const depth = 4
+    const depth = 3 + Object.keys(state.crypts).length
     const cost = 12.50 ** Object.keys(state.crypts).length
 
     const crypt = {

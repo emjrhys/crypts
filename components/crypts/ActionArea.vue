@@ -24,7 +24,7 @@ CPseudoBox(
     py='2'
     px='3'
   )
-    CText(fontWeight='500' :style='labelStyle')
+    CText(fontSize='xl' fontWeight='500' :style='labelStyle')
       | {{ actionIconMap[type] }} {{ actionTextMap[type] }} 
 
   CFlex(
@@ -176,11 +176,11 @@ export default {
   methods: {
     handleClick() {
       this.damage += this.playerDamage
-      this.$store.dispatch('player/applyXP', this.playerDamage)
 
       if (this.damage >= this.health) {
         this.complete = true
         this.$emit('complete')
+        this.$store.dispatch('player/applyXP', this.health)
       }
     }
   }
