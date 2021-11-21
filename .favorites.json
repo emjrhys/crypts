@@ -1,13 +1,5 @@
 [
     {
-        "type": "Directory",
-        "name": "/Users/noahlafferty/Documents/crypts/store",
-        "parent_id": null,
-        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
-        "workspacePath": "store",
-        "id": "9oSdyhVHp54rlQ0F"
-    },
-    {
         "type": "Group",
         "name": "2 pages",
         "parent_id": null,
@@ -38,22 +30,6 @@
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "JlEP841sv27qekcK"
-    },
-    {
-        "type": "File",
-        "name": "/Users/noahlafferty/Documents/crypts/store/crypts.js",
-        "parent_id": "JlEP841sv27qekcK",
-        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
-        "workspacePath": "store/crypts.js",
-        "id": "ghGLDPOszF73r91B"
-    },
-    {
-        "type": "File",
-        "name": "/Users/noahlafferty/Documents/crypts/store/player.js",
-        "parent_id": "JlEP841sv27qekcK",
-        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
-        "workspacePath": "store/player.js",
-        "id": "0ReudAzaK7kxnHpX"
     },
     {
         "type": "File",
@@ -94,5 +70,30 @@
         "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
         "workspacePath": "components/crypts/RoomNode.vue",
         "id": "tc5A8kGXMxIWbNZi"
+    },
+    {
+        "type": "File",
+        "name": "/Users/noahlafferty/Documents/crypts/store/crypts.js",
+        "parent_id": "JlEP841sv27qekcK",
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "store/crypts.js",
+        "id": "JNVkHFrTt03I86P2"
+    },
+    {
+        "type": "File",
+        "name": "/Users/noahlafferty/Documents/crypts/store/player.js",
+        "parent_id": "JlEP841sv27qekcK",
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "store/player.js",
+        "id": "5TCxcqXHk1mf82Fu"
+    }
+]
+   {
+        "type": "File",
+        "name": "/Users/noahlafferty/Documents/crypts/pages/index.vue",
+        "parent_id": null,
+        "workspaceRoot": "/Users/noahlafferty/Documents/crypts",
+        "workspacePath": "pages/index.vue",
+        "id": "MTirNR1SgIs0xJD2"
     }
 ]

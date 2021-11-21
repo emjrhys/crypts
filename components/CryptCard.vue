@@ -7,9 +7,10 @@ CBox(
   px='3'
   py='2'
 )
-  CFlex(justify='space-between' align='center')
-    CHeading(size='md')
-      | {{ crypt.name }}
+  CFlex(direction='column' justify='space-between' align='center')
+    CHeading(as='h2') {{ crypt.name.parts.structure }}
+    CHeading(as='h5') of the
+    CHeading(as='h1') {{ crypt.name.parts.adjective }} {{ crypt.name.parts.subject }}
 
     CFlex(align='center')
       CButton(
@@ -21,6 +22,7 @@ CBox(
 
       CButton(
         v-else
+        mt='3'
         @click='purchase' 
         :disabled='crypt.cost > money'
       )

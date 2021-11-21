@@ -12,7 +12,7 @@ CFlex(
   //- Header
   CFlex(justify='space-between' align='center' mb='3')
     CHeading(size='lg')
-      | {{ crypt.name }}
+      | {{ crypt.name.text }}
     CButton(ml='2' @click='goBack')
       | Back to Crypts
 
