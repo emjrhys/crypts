@@ -7,7 +7,10 @@ import Vue from 'vue'
 const initialState = () => ({
   level: 1,
   xp: 0,
-  money: 1
+  xpToNextLevel: 100,
+  xpToPrevLevel: 0,
+  money: 1,
+  damage: 1
 })
 
 export const state = initialState
@@ -20,6 +23,16 @@ export const mutations = {
     state.money += change
     return true
   },
+  ADD_XP (state, xpChange) {
+    if (xpChange <= 0) return
+    state.xp += xpChange
+  },
+  LEVEL_UP (state) {
+    state.xpToPrevLevel = state.xpToNextLevel
+    state.xpToNextLevel = state.xp + state.xpToPrevLevel * 1.63 ** state.level
+    state.damage = state.damage + 1.5 ** state.level
+    state.level += 1
+  }
 }
 
 export const getters = {
@@ -27,5 +40,13 @@ export const getters = {
 }
 
 export const actions = {
+  applyXP ({ state, commit, dispatch }, xpChange) {
+    commit('ADD_XP', xpChange)
 
+    if (state.xp >= state.xpToNextLevel)
+      dispatch('levelUp')
+  },
+  levelUp ({ commit }) {
+    commit('LEVEL_UP')
+  }
 }

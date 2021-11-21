@@ -36,6 +36,7 @@ export default {
     '~/plugins/helpers',
     '~/plugins/formatters',
     '~/plugins/log-alerts',
+    '~/plugins/popups',
     '~/plugins/names',
     '~/plugins/crypts',
   ],

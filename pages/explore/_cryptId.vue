@@ -5,17 +5,12 @@ CFlex(
   justify='center'
   height='100vh'
   width='100vw'
-  py='4'
-  px='5'
   overflow='scroll'
   :style='cryptStyle'
 )
-  //- Header
-  CFlex(justify='space-between' align='center' mb='3')
-    CHeading(size='lg')
+  CFlex(justify='center' align='center' mb='3')
+    CHeading(size='md')
       | {{ crypt.name.text }}
-    CButton(ml='2' @click='goBack')
-      | Back to Crypts
 
   CFlex(flex='1' justify='center' align='center')
     CBox(
@@ -25,7 +20,7 @@ CFlex(
       p='3'
       :style='roomStyle'
     )
-      RoomNode(:node='crypt.root')      
+      RoomNode(:node='crypt.root')     
 </template>
 
 <script>

@@ -4,23 +4,33 @@ CFlex(
   flex-dir='row'
   justify='space-between'
   align='center'
-  py='8'
-  px='12'
+  py='4'
+  px='10'
 )
-  CHeading(size='lg')
-    | 🪦 Crypts
+  CFlex(flex='1' justify='flex-start')
+    nuxt-link(to='/')
+      CHeading(size='lg')
+        | 🪦 Crypts
 
-  CHeading(size='md')
-    | 💰 {{ $formatCurrency(money) }}
+  CFlex(flex='1' justify='center')
+    PlayerCard
+
+  CFlex(flex='1' justify='flex-end')
+    CButton(@click='reset')
+      | Reset
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import PlayerCard from '~/components/PlayerCard'
 
 export default {
   name: 'NavBar',
-  computed: {
-    ...mapState('player', ['money'])
+  components: { PlayerCard },
+  methods: {
+    reset () {
+      localStorage.removeItem('crypts_save_data')
+      window.location.href = '/'
+    }
   }
 }
 </script>

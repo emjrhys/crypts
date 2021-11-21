@@ -35,9 +35,9 @@ CPseudoBox(
     top='0'
     left='0'
     justify='flex-end'
-    align='flex-end'
-    py='2'
-    px='3'
+    align='flex-start'
+    py='1'
+    px='2'
   )
     CText(
       v-if='health > 1 && percentComplete > 0' 
@@ -66,6 +66,8 @@ CPseudoBox(
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'ActionArea',
   props: ['type', 'health'],
@@ -102,6 +104,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('player', {
+      playerDamage (state) { return state.damage }
+    }),
     percentComplete () {
       let percent = this.damage / this.health * 100
       if (percent > 100) percent = 100
@@ -125,8 +130,8 @@ export default {
     shadowColor () {
       return this.adjustHexSL(
         this.actionColorMap[this.type],
-        50,
-        50
+        75,
+        65
       )
     },
     labelColor () {
@@ -134,13 +139,6 @@ export default {
         this.actionColorMap[this.type],
         75,
         25
-      )
-    },
-    percentColor () {
-      return this.adjustHexSL(
-        this.actionColorMap[this.type],
-        85,
-        65
       )
     },
     buttonStyle () {
@@ -157,7 +155,7 @@ export default {
     },
     percentStyle () {
       return {
-        color: this.percentColor
+        color: this.shadowColor
       }
     },
     progressBarStyle () {
@@ -177,7 +175,8 @@ export default {
   },
   methods: {
     handleClick() {
-      this.damage += 1
+      this.damage += this.playerDamage
+      this.$store.dispatch('player/applyXP', this.playerDamage)
 
       if (this.damage >= this.health) {
         this.complete = true
