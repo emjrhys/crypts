@@ -9,25 +9,26 @@ CFlex(
   maxH='800px'
   direction='column'
   justify='center'
-  align='stretch'
+  align='center'
   px='3'
 )
   CFlex(
     h='2rem'
     justify='center'
     align='center'
+    :style='northSouthDoorStyle'
   )
     ActionArea(
       v-if='northDoor'
-      :style='northSouthDoorStyle'
       type='door'
-      health='1'
+      :health='1'
       p='0'
       @click='currentCoords.y--'
     )
 
   CFlex(
-    flex='1' 
+    flex='1'
+    width='100%'
     minH='0' 
     justify='center' 
     align='stretch'
@@ -38,15 +39,14 @@ CFlex(
       justify='center'
       align='center'
     )
-      CButton(
+      ActionArea(
         v-if='westDoor'
-        display='flex'
-        justify='center'
-        align='center'
         :style='eastWestDoorStyle'
+        type='door'
+        :health='1'
+        p='0'
         @click='currentCoords.x--'
       )
-        | 🚪
 
     CBox(
       flex='1'
@@ -63,40 +63,43 @@ CFlex(
       justify='center'
       align='center'
     )
-      CButton(
-        v-if='eastDoor' 
-        display='flex'
-        justify='center'
-        align='center'
+      ActionArea(
+        v-if='eastDoor'
         :style='eastWestDoorStyle'
+        type='door'
+        :health='1'
+        p='0'
         @click='currentCoords.x++'
       )
-        | 🚪
 
   CFlex(
     h='2rem'
     justify='center'
     align='center'
   )
-    CButton(
-      v-if='southDoor' 
-      display='flex'
-      justify='center'
-      align='center'
+    ActionArea(
+      v-if='southDoor'
       :style='northSouthDoorStyle'
+      type='door'
+      :health='1'
+      p='0'
       @click='currentCoords.y++'
     )
-      | 🚪
 
 </template>
 
 <script>
 import Room from '~/components/crypts/Room'
 import Door from '~/components/crypts/Door'
+import ActionArea from '~/components/crypts/ActionArea'
 
 export default {
   name: 'Crypt',
-  components: { Room, Door },
+  components: { 
+    Room,
+    Door,
+    ActionArea,
+  },
   data () {
     return {
       currentCoords: { x: 0, y: 0 },

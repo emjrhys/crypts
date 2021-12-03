@@ -4,28 +4,32 @@ CTooltip(
   minH='0'
 )
   CPseudoBox(as='button'
+    ref='actionArea'
     h='100%' 
     w='100%' 
     position='relative' 
     rounded='lg'
     border='1px'
     overflow='hidden'
-    :style='buttonStyle'
+    :style='areaStyle'
     @mouseup='handleClick'
     :disabled='complete'
   )
     CFlex(
       pos='absolute'
-      z-index='5'
+      z-index='6'
       width='100%'
       height='100%'
       top='0'
       left='0'
+      direction='column'
       justify='center'
       align='center'
       py='2'
       px='3'
     )
+      //- CText(:style='labelStyle')
+        | {{ actionTextMap[type] }}
       CText(fontSize='2xl' fontWeight='500')
         | {{ actionIconMap[type] }}
 
@@ -36,16 +40,14 @@ CTooltip(
       height='100%'
       top='0'
       left='0'
-      justify='flex-end'
-      align='flex-start'
+      justify='center'
+      align='center'
       py='1'
       px='2'
     )
       CText(
         v-if='health > 1 && percentComplete > 0' 
-        fontSize='xl' 
-        fontWeight='700' 
-        :style='percentStyle'
+        :style='percentStyleOuter'
       )
         | {{ percentComplete }}%
 
@@ -57,6 +59,14 @@ CTooltip(
       transition='width 250ms'
       :style='progressBarStyle'
     )
+      CFlex(
+
+      )
+        CText(
+          v-if='health > 1 && percentComplete > 0' 
+          :style='percentStyleInner'
+        )
+          | {{ percentComplete }}%
 
     //- Instant progress bar
     CBox(
@@ -90,14 +100,14 @@ export default {
       },
       actionTextMap: {
         explore: 'Explore',
-        door: 'Open',
+        door: 'Door',
         crate: 'Crate',
         vase: 'Vase',
         key: 'Key',
         shrine: 'Shrine',
       },
       actionColorMap: {
-        explore: '#D4CDF4',
+        explore: '#99D19C',
         door: '#7F3900',
         crate: '#F7B32B',
         vase: '#F06543',
@@ -109,7 +119,7 @@ export default {
   computed: {
     ...mapState(['dragging']),
     ...mapState('player', {
-      playerDamage (state) { return state.damage }
+      playerDamage (state) { return state.attributes.strength }
     }),
     ...mapGetters('crypts', ['findRoom']),
     percentComplete () {
@@ -132,7 +142,7 @@ export default {
         30
       )
     },
-    buttonStyle () {
+    areaStyle () {
       return {
         background: this.backgroundColor,
         'box-shadow': `0 2px 0 0 ${this.shadowColor}`,
@@ -142,22 +152,38 @@ export default {
         transition: `all ${completeAnimDuration}ms`,
       }
     },
-    percentStyle () {
+    labelStyle () {
       return {
+        'font-size': '64px',
+        'font-weight': 900,
         color: this.adjustHexSL(
           this.actionColorMap[this.type],
           65,
-          65
+          65,
         )
+      }
+    },
+    percentStyle () {
+      return {
+        'font-size': '64px',
+        'font-weight': 900,
+      }
+    },
+    percentStyleOuter () {
+      return {
+        ...this.percentStyle,
+        color: this.actionColorMap[this.type],
+      }
+    },
+    percentStyleInner () {
+      return {
+        ...this.percentStyle,
+        color: this.backgroundColor,
       }
     },
     progressBarStyle () {
       return {
-        background: this.adjustHexSL(
-          this.actionColorMap[this.type],
-          100,
-          65
-        ),
+        background: this.actionColorMap[this.type],
         width: `${this.health === 1 ? 100 : this.percentComplete}%`,
         bottom: 0,
         left: 0
@@ -174,8 +200,9 @@ export default {
     ...mapMutations('player', ['ADD_KEY']),
     ...mapMutations('crypt', ['UPDATE_ROOM']),
     handleClick() {
-      console.log('handling click')
       if (this.dragging) return
+
+      this.$emit('click')
 
       this.damage += this.playerDamage
 

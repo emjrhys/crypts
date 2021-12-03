@@ -4,14 +4,41 @@ import Vue from 'vue'
  * shop, crypts, player, settings
  */
 
+const baseAttributes = { // AKA attributes
+  // Core
+  vim: 5, // maxEnergy = vim * 5
+  vigor: 5, // maxHealth = vigor * 10
+
+  // Exploration
+  perception: 5,
+  luck: 5,
+
+  // Combat
+  strength: 5,
+  evasion: 5,
+}
+
 const initialState = () => ({
   level: 1,
   xp: 0,
   xpToNextLevel: 100,
   xpToPrevLevel: 0,
+
+  // Wallet
   money: 1,
   keys: 0,
-  damage: 1
+  skillPoints: 0,
+  attribPoints: 0,
+
+  // Skills & Attributes
+  skills: {},
+  attributes: baseAttributes,
+  
+  // Stats
+  energy: baseAttributes.vim * 5,
+  health: baseAttributes.vigor * 10,
+  maxEnergy: baseAttributes.vim * 5,
+  maxHealth: baseAttributes.vigor * 10,
 })
 
 export const state = initialState
@@ -36,13 +63,15 @@ export const mutations = {
   LEVEL_UP (state) {
     state.xpToPrevLevel = state.xpToNextLevel
     state.xpToNextLevel = state.xp + state.xpToPrevLevel * 1.63 ** state.level
-    state.damage = state.damage + 1.25 ** state.level
     state.level += 1
+
+    state.energy = state.maxEnergy
+    state.health = state.maxHealth
   }
 }
 
 export const getters = {
-
+  
 }
 
 export const actions = {
