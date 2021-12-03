@@ -19,26 +19,31 @@ const baseAttributes = { // AKA attributes
 }
 
 const initialState = () => ({
+  // Level
   level: 1,
   xp: 0,
   xpToNextLevel: 100,
   xpToPrevLevel: 0,
 
-  // Wallet
-  money: 1,
-  keys: 0,
-  skillPoints: 0,
-  attribPoints: 0,
-
   // Skills & Attributes
-  skills: {},
   attributes: baseAttributes,
+  skills: {},
+  call: {},
   
   // Stats
   energy: baseAttributes.vim * 5,
   health: baseAttributes.vigor * 10,
   maxEnergy: baseAttributes.vim * 5,
   maxHealth: baseAttributes.vigor * 10,
+
+  // Possessions
+  money: 1,
+  keys: 0,
+  upgradePoints: {
+    attribute: 0,
+    skill: 0,
+    call: 0,
+  },
 })
 
 export const state = initialState
@@ -61,12 +66,31 @@ export const mutations = {
     state.keys-- 
   },
   LEVEL_UP (state) {
+    // Calculate XP to next level
     state.xpToPrevLevel = state.xpToNextLevel
     state.xpToNextLevel = state.xp + state.xpToPrevLevel * 1.63 ** state.level
     state.level += 1
 
+    // Refill health and energy
     state.energy = state.maxEnergy
     state.health = state.maxHealth
+
+    // Give upgrade points
+    state.upgradePoints.attribute++
+    
+    // Bonus AP on multiples of 3
+    if (state.level % 3 === 0)
+      state.upgradePoints.attribute++
+
+    // Skill point every other level
+    if (state.level % 2 === 0)
+      state.upgradePoints.skill++
+
+    // Calling point every 5 levels, 2 on 10s
+    if (state.level % 10 === 0)
+      state.upgradePoints.call += 2
+    else if (state.level % 5 === 0)
+      state.upgradePoints.call++
   }
 }
 

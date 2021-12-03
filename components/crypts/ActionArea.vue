@@ -108,7 +108,7 @@ export default {
       },
       actionColorMap: {
         explore: '#99D19C',
-        door: '#7F3900',
+        door: '#212227',
         crate: '#F7B32B',
         vase: '#F06543',
         shrine: '#F06543',
