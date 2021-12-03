@@ -56,30 +56,36 @@ export default ({ app, store }, inject) => {
             baseChance += 0.25
         }
       }
-      
+
       baseChance = baseChance ** (nominalDepth + 1)
-      // Always create an explore at the top level
-      if (nominalDepth === 0) {
-        return 'explore'
 
-        // Roll to create treasures
-      } else if (depth === 0 && Math.random() <= (baseChance / 2)) {
-        if (Math.random() <= ((parentType === 'crate') ? 0.25 : 0.05)) 
-          return 'key'
-        else
-          return 'vase'
-
-        // Crate
-      } else if (depth >= 1 && depth <= 2 && (Math.random() <= (parentType === 'explore' ? baseChance / 2 : baseChance / 3))) {
-        return 'crate'
-
-        // Explore
-      } else if (depth !== 0 && Math.random() <= baseChance) {
-        return 'explore'
-
-      } else {
-        return null
+      const typeRollers = {
+        explore: {
+          roll: () => depth !== 0 && Math.random() <= baseChance,
+          required: (() => nominalDepth === 0)()
+        },
+        shrine: {
+          roll: () => depth === 1 && Math.random() <= (baseChance / 5)
+        },
+        crate: {
+          roll: () => depth >= 1 && depth <= 2 && Math.random() <= (baseChance / 3)
+        },
+        key: {
+          roll: () => depth === 0 && Math.random() <= ((baseChance + (parentType === 'crate') ? 0.25 : 0) / 5)
+        },
+        vase: {
+          roll: () => depth === 0 && Math.random() <= ((baseChance + (parentType === 'crate') ? -0.1 : 0.25) / 2)
+        },
       }
+      
+      // Always create an explore at the top level
+      for (const [key, value] of Object.entries(typeRollers)) {
+        if (value.roll() || value.required) {
+          return key
+        }
+      }
+
+      return null
     }
 
     const getHealth = (type, depth) => {
@@ -88,9 +94,7 @@ export default ({ app, store }, inject) => {
           return 1.176 ** depth * 8
         case 'crate':
           return 1.776 ** depth * 15
-        case 'vase':
-          return 1
-        case 'key':
+        default:
           return 1
       }
     }

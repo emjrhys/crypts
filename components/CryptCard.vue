@@ -9,9 +9,9 @@ CFlex(
   px='10'
 )
   CFlex(direction='column' align='center' textAlign='center')
-    CText(fontSize='3xl' fontWeight='700') {{ crypt.name.parts.structure }}
+    CText(fontSize='3xl' fontWeight='700') {{ crypt.nameParts.structure }}
     CText(fontSize='xl' fontWeight='700') of the
-    CText(fontSize='4xl' lineHeight='1' fontWeight='700') {{ crypt.name.parts.adjective }} {{ crypt.name.parts.subject }}
+    CText(fontSize='4xl' lineHeight='1' fontWeight='700') {{ crypt.nameParts.adjective }} {{ crypt.nameParts.subject }}
 
   CFlex(mt='8' align='center')
     CButton(

@@ -68,7 +68,7 @@ CTooltip(
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 
 const completeAnimDuration = 250
 
@@ -86,6 +86,7 @@ export default {
         vase: '🏺',
         key: '🗝',
         locked: '🔒',
+        shrine: '🗿',
       },
       actionTextMap: {
         explore: 'Explore',
@@ -93,12 +94,14 @@ export default {
         crate: 'Crate',
         vase: 'Vase',
         key: 'Key',
+        shrine: 'Shrine',
       },
       actionColorMap: {
         explore: '#D4CDF4',
         door: '#7F3900',
         crate: '#F7B32B',
         vase: '#F06543',
+        shrine: '#F06543',
         key: '#81C3D7',
       }
     }
@@ -108,6 +111,7 @@ export default {
     ...mapState('player', {
       playerDamage (state) { return state.damage }
     }),
+    ...mapGetters('crypts', ['findRoom']),
     percentComplete () {
       let percent = this.damage / this.health * 100
       if (percent > 100) percent = 100
@@ -168,6 +172,7 @@ export default {
   },
   methods: {
     ...mapMutations('player', ['ADD_KEY']),
+    ...mapMutations('crypt', ['UPDATE_ROOM']),
     handleClick() {
       console.log('handling click')
       if (this.dragging) return

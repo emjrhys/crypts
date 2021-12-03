@@ -45,6 +45,7 @@ export const HSLToHex = (h,s,l) => {
 }
 
 export const hexToHSL = (hex) => {
+  console.log(hex)
   // Convert hex to RGB first
   let r = 0, g = 0, b = 0
   if (hex.length == 4) {

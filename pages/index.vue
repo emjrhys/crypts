@@ -1,60 +1,26 @@
 <template lang='pug'>
-CBox(
-  h='100vh'
-  w='100vw'
-  d='flex'
-  flex-dir='column'
-  justify-content='space-between'
-  align-items='stretch'
-  overflow='hidden'
-  v-bind='mainStyles[colorMode]'
+CFlex(
+  direction='column'
+  justify='space-between'
+  align='stretch'
 )
-  CFlex(
-    width='100%'
-    justify='center'
-    align='center'
-    z-index='1000'
-    py='3'
-    px='5'
+  CHeading(
+    textAlign='center'
+    mb='5'
   )
-    PlayerCard
+    | Crypts
 
-  CFlex(v-if='$route.name === "index"')
+  CGrid(
+    flex='1'
+    gridTemplateColumns='repeat(auto-fit, minmax(300px, 1fr))'
+    gap='6'
+    py='0'
+    px='8'  
+  )
     CryptCard(
       v-for='crypt, key, index in crypts' :key='crypt.id'
       :crypt='crypt'
     )
-
-  nuxt-child(v-else)
-
-  CFlex(
-    width='100%'
-    justify='space-between'
-    align='center'
-    py='4'
-    px='5'
-  )
-    nuxt-link(to='/')
-      CButton(size='sm' pl='1')
-        CIcon(name='chevron-left' size='20px')
-        | Crypts
-
-    CFlex(
-      align='center'
-    )
-      //- Shop button
-      CButton(size='sm' disabled)
-        CText(mr='2')
-          | 🛍️
-        CText
-          | Shop
-
-      CIconButton(
-        ml='3'
-        :icon='colorMode === "light" ? "moon" : "sun"'
-        :aria-label='`Switch to ${colorMode === "light" ? "dark" : "light"} mode`'
-        @click='toggleColorMode'
-      )
 </template>
 
 <script>
@@ -67,34 +33,9 @@ export default {
   components: {
     CryptCard,
   },
-  inject: ['$chakraColorMode', '$toggleColorMode'],
-  data () {
-    return {
-      showModal: false,
-      mainStyles: {
-        dark: {
-          bg: 'gray.700',
-          color: 'whiteAlpha.900'
-        },
-        light: {
-          bg: 'white',
-          color: 'gray.900'
-        }
-      }
-    }
-  },
   computed: {
     ...mapState('player', ['money']),
     ...mapState('crypts', ['crypts', 'cryptSlots']),
-    colorMode () {
-      return this.$chakraColorMode()
-    },
-    theme () {
-      return this.$chakraTheme()
-    },
-    toggleColorMode () {
-      return this.$toggleColorMode
-    }
   },
   mounted () {
     if (this.$store.getters['crypts/getCryptCount']() === 0) {
@@ -103,8 +44,6 @@ export default {
         id: this.$store.getters['crypts/getCryptsAsArray']()[0].id
       })
     }
-
-    console.log(this.$route.name)
   }
 }
 </script>

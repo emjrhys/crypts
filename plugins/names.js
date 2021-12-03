@@ -142,9 +142,12 @@ export default ({ app }, inject) => {
           adjective = names.adjectives[Math.floor(Math.random()*names.adjectives.length)],
           subject = names.subjects[Math.floor(Math.random()*names.subjects.length)]
 
+    const text = `${structure} of the ${adjective} ${subject}`
+
     return {
-      text: `${structure} of the ${adjective} ${subject}`,
-      parts: { structure, adjective, subject }
+      text,
+      parts: { structure, adjective, subject },
+      id: text.toLowerCase().split(' ').join('-')
     }
   }
 

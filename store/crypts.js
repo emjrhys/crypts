@@ -17,6 +17,8 @@ export const mutations = {
     Vue.set(state.crypts, newCrypt.id, newCrypt)
   },
   UPDATE_ROOM (state, { cryptId, x, y, depth, roomData }) {
+    let crypt = state.crypts[cryptId]
+
     
   },
   UNLOCK_CRYPT (state, { id }) {
@@ -36,6 +38,9 @@ export const getters = {
   },
   getCryptById: (state) => (id) => {
     return state.crypts[id]
+  },
+  findRoom: (state) => (cryptId, x, y, depth) => {
+    const crypt = state.crypts[cryptId]
   }
 }
 
@@ -47,11 +52,12 @@ export const actions = {
     const cost = depth === 1 ? 1 : 10 * 1.234 ** (numCrypts - 1)
 
     const crypt = {
-      name, 
+      name: name.text,
+      nameParts: name.parts, 
       depth, 
       cost,
       unlocked: false,
-      id: `crypt-${cost}`,
+      id: name.id,
       ...this.$crypts.generateCrypt(depth)
     }
 
