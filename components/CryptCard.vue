@@ -16,13 +16,14 @@ CFlex(
   CFlex(mt='8' align='center')
     CButton(
       v-if='crypt.unlocked'
-      variant-color='green'
+      variant-color='blue'
       @click='explore'
     )
-      | Explore
+      | Enter
 
     CButton(
       v-else
+      :variant-color='crypt.cost > money ? "gray" : "yellow"'
       @click='purchase' 
       :disabled='crypt.cost > money'
     )

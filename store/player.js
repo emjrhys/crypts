@@ -10,6 +10,7 @@ const initialState = () => ({
   xpToNextLevel: 100,
   xpToPrevLevel: 0,
   money: 1,
+  keys: 0,
   damage: 1
 })
 
@@ -27,10 +28,15 @@ export const mutations = {
     if (xpChange <= 0) return
     state.xp += xpChange
   },
+  ADD_KEY (state) { state.keys++ },
+  USE_KEY (state) { 
+    if (state.keys === 0) return
+    state.keys-- 
+  },
   LEVEL_UP (state) {
     state.xpToPrevLevel = state.xpToNextLevel
     state.xpToNextLevel = state.xp + state.xpToPrevLevel * 1.63 ** state.level
-    state.damage = state.damage + 1.5 ** state.level
+    state.damage = state.damage + 1.25 ** state.level
     state.level += 1
   }
 }

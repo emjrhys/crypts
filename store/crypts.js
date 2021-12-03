@@ -6,6 +6,7 @@ import Vue from 'vue'
 
 const initialState = () => ({
   activeCryptId: null,
+  cryptSlots: 1,
   crypts: {},
 })
 
@@ -27,6 +28,9 @@ export const mutations = {
 }
 
 export const getters = {
+  getCryptsAsArray: (state) => () => {
+    return Object.values(state.crypts)
+  },
   getCryptCount: (state) => () => {
     return Object.keys(state.crypts).length
   },
@@ -37,9 +41,10 @@ export const getters = {
 
 export const actions = {
   generateCrypt ({ state, commit }) {
+    const numCrypts = Object.keys(state.crypts).length
     const name = this.$generateDungeonName()
-    const depth = 3 + Object.keys(state.crypts).length
-    const cost = 12.50 ** Object.keys(state.crypts).length
+    const depth = numCrypts + 1
+    const cost = depth === 1 ? 1 : 10 * 1.234 ** (numCrypts - 1)
 
     const crypt = {
       name, 
@@ -47,7 +52,7 @@ export const actions = {
       cost,
       unlocked: false,
       id: `crypt-${cost}`,
-      root: this.$crypts.generateCryptTree(depth, 7, 7)
+      ...this.$crypts.generateCrypt(depth)
     }
 
     console.log(crypt)
@@ -56,6 +61,7 @@ export const actions = {
   },
   purchaseCrypt ({ rootState, commit, getters, dispatch }, { id }) {
     const cryptCost = getters.getCryptById(id).cost
+    const numCrypts = getters.getCryptCount()
 
     if (cryptCost > rootState.player.money)
       throw new Error('Not enough money!!')

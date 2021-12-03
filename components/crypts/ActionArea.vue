@@ -1,72 +1,76 @@
 <template lang='pug'>
-CPseudoBox(
-  as='button'
-  h='100%' 
-  w='100%' 
-  position='relative' 
-  rounded='lg'
-  border='1px'
-  transition='all 150ms'
-  overflow='hidden'
-  :style='buttonStyle'
-  @click='handleClick'
-  :disabled='complete'
+CTooltip(
+  :label='actionTextMap[type]'
+  minH='0'
 )
-  CFlex(
-    pos='absolute'
-    z-index='5'
-    width='100%'
-    height='100%'
-    top='0'
-    left='0'
-    justify='center'
-    align='center'
-    py='2'
-    px='3'
+  CPseudoBox(as='button'
+    h='100%' 
+    w='100%' 
+    position='relative' 
+    rounded='lg'
+    border='1px'
+    overflow='hidden'
+    :style='buttonStyle'
+    @mouseup='handleClick'
+    :disabled='complete'
   )
-    CText(fontSize='xl' fontWeight='500' :style='labelStyle')
-      | {{ actionIconMap[type] }} {{ actionTextMap[type] }} 
-
-  CFlex(
-    pos='absolute'
-    z-index='5'
-    width='100%'
-    height='100%'
-    top='0'
-    left='0'
-    justify='flex-end'
-    align='flex-start'
-    py='1'
-    px='2'
-  )
-    CText(
-      v-if='health > 1 && percentComplete > 0' 
-      fontSize='xl' 
-      fontWeight='700' 
-      :style='percentStyle'
+    CFlex(
+      pos='absolute'
+      z-index='5'
+      width='100%'
+      height='100%'
+      top='0'
+      left='0'
+      justify='center'
+      align='center'
+      py='2'
+      px='3'
     )
-      | {{ percentComplete }}%
+      CText(fontSize='2xl' fontWeight='500')
+        | {{ actionIconMap[type] }}
 
-  //- Slow progress bar
-  CBox(
-    h='100%'
-    pos='absolute'
-    z-index='2'
-    transition='width 250ms'
-    :style='progressBarStyle'
-  )
+    CFlex(
+      pos='absolute'
+      z-index='5'
+      width='100%'
+      height='100%'
+      top='0'
+      left='0'
+      justify='flex-end'
+      align='flex-start'
+      py='1'
+      px='2'
+    )
+      CText(
+        v-if='health > 1 && percentComplete > 0' 
+        fontSize='xl' 
+        fontWeight='700' 
+        :style='percentStyle'
+      )
+        | {{ percentComplete }}%
 
-  //- Instant progress bar
-  CBox(
-    h='100%'
-    pos='absolute'
-    z-index='1'
-    :style='progressBarInstantStyle'
-  )
+    //- Slow progress bar
+    CBox(
+      h='100%'
+      pos='absolute'
+      z-index='2'
+      transition='width 250ms'
+      :style='progressBarStyle'
+    )
+
+    //- Instant progress bar
+    CBox(
+      h='100%'
+      pos='absolute'
+      z-index='1'
+      :style='progressBarInstantStyle'
+    )
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
+
+const completeAnimDuration = 250
 
 export default {
   name: 'ActionArea',
@@ -80,9 +84,7 @@ export default {
         door: '🚪',
         crate: '📦',
         vase: '🏺',
-        collect_money: '💰',
-        collect_key: '🗝',
-        collect_item: '❓',
+        key: '🗝',
         locked: '🔒',
       },
       actionTextMap: {
@@ -90,20 +92,19 @@ export default {
         door: 'Open',
         crate: 'Crate',
         vase: 'Vase',
-        collect_money: 'Collect',
-        collect_key: 'Collect',
-        collect_item: 'Collect',
-        locked: 'Locked',
+        key: 'Key',
       },
       actionColorMap: {
         explore: '#D4CDF4',
         door: '#7F3900',
         crate: '#F7B32B',
         vase: '#F06543',
+        key: '#81C3D7',
       }
     }
   },
   computed: {
+    ...mapState(['dragging']),
     ...mapState('player', {
       playerDamage (state) { return state.damage }
     }),
@@ -113,54 +114,46 @@ export default {
 
       return Math.floor(percent)
     },
-    progressColor () {
-      return this.adjustHexSL(
-        this.actionColorMap[this.type],
-        100,
-        85
-      )
-    },
     backgroundColor () {
       return this.adjustHexSL(
         this.actionColorMap[this.type],
         75,
-        97.5
+        98
       )
     },
     shadowColor () {
       return this.adjustHexSL(
         this.actionColorMap[this.type],
         75,
-        65
-      )
-    },
-    labelColor () {
-      return this.adjustHexSL(
-        this.actionColorMap[this.type],
-        75,
-        25
+        30
       )
     },
     buttonStyle () {
       return {
-        background: this.complete ? '' : this.backgroundColor,
+        background: this.backgroundColor,
         'box-shadow': `0 2px 0 0 ${this.shadowColor}`,
-        'border-color': this.shadowColor
-      }
-    },
-    labelStyle () {
-      return {
-        color: this.labelColor
+        'border-color': this.shadowColor,
+        transform: this.complete ? `scale(1.25)` : 'scale(1)',
+        opacity: this.complete ? 0 : 1,
+        transition: `all ${completeAnimDuration}ms`,
       }
     },
     percentStyle () {
       return {
-        color: this.shadowColor
+        color: this.adjustHexSL(
+          this.actionColorMap[this.type],
+          65,
+          65
+        )
       }
     },
     progressBarStyle () {
       return {
-        background: this.progressColor,
+        background: this.adjustHexSL(
+          this.actionColorMap[this.type],
+          100,
+          65
+        ),
         width: `${this.health === 1 ? 100 : this.percentComplete}%`,
         bottom: 0,
         left: 0
@@ -174,13 +167,24 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('player', ['ADD_KEY']),
     handleClick() {
+      console.log('handling click')
+      if (this.dragging) return
+
       this.damage += this.playerDamage
 
       if (this.damage >= this.health) {
         this.complete = true
-        this.$emit('complete')
-        this.$store.dispatch('player/applyXP', this.health)
+        
+        setTimeout(() => {
+          this.$emit('complete')
+          this.$store.dispatch('player/applyXP', this.health)
+
+          if (this.type === 'key')
+            this.ADD_KEY()
+        }, completeAnimDuration)
+
       }
     }
   }

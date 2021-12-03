@@ -109,7 +109,6 @@ const names = {
     'Guardian',
     'Jaguar',
     'King',
-    'Lawyer',
     'Lion',
     'Martyr',
     'Monk',

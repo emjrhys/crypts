@@ -4,25 +4,33 @@ CGrid(
   h='100%'
   :template-columns='`repeat(${node.width}, 1fr)`'
   :template-rows='`repeat(${node.height}, 1fr)`'
-  gap='3'
+  :gap='node.room && !roomComplete ? 0 : 2'
+  :style='roomStyle'
+  rounded='lg'
 )
-  template(v-if='node.room && !roomComplete')
+  template(v-if='node.room && !roomAnimComplete')
     CGridItem(
       col-start='0'
       row-start='0'
       :col-span='node.width.toString()'
       :row-span='node.height.toString()'
     )
-      ActionArea(:type='node.room.type' :health='node.room.health' @complete='handleRoomComplete')
+      ActionArea(
+        :type='node.room.type' 
+        :health='node.room.health' 
+        @complete='handleRoomComplete'
+        @anim-complete='handleRoomAnimComplete'
+      )
 
-  template(v-else v-for='child, idx in node.children')
-    CGridItem(
-      :col-start='(Math.abs(child.x - node.x) + 1).toString()'
-      :row-start='(Math.abs(child.y - node.y) + 1).toString()'
-      :col-span='(Math.floor(node.width / 2) + ([1,3].includes(idx) ? 1 : 0)).toString()'
-      :row-span='(Math.floor(node.height / 2) + ([2,3].includes(idx) ? 1 : 0)).toString()'
-    )
-      RoomNode(:node='child')
+  CGridItem(
+    v-if='!node.room || roomComplete'
+    v-for='child, idx in node.children' :key='idx'
+    :col-start='(Math.abs(child.x - node.x) + 1).toString()'
+    :row-start='(Math.abs(child.y - node.y) + 1).toString()'
+    :col-span='(Math.floor(node.width / 2) + ([1,3].includes(idx) ? 1 : 0)).toString()'
+    :row-span='(Math.floor(node.height / 2) + ([2,3].includes(idx) ? 1 : 0)).toString()'
+  )
+    RoomNode(:node='child')
 </template>
 
 <script>
@@ -34,18 +42,27 @@ export default {
   props: ['node'],
   data () {
     return {
-      roomComplete: false
+      roomComplete: false,
+      roomAnimComplete: false,
     }
   },
   computed: {
     hasRoom () {
       return this.node.room !== null
     },
+    hasBackground () {
+      return this.node.room?.type === 'crate' ?? false
+    },
     health () {
       let health = this.room.width * this.room.height * 2
 
       return health
     },
+    roomStyle () {
+      return {
+        background: this.hasBackground ? '#CBD5E0' : 'none'
+      }
+    }
   },
   methods: {
     handleRoomComplete () {
@@ -53,6 +70,9 @@ export default {
         this.$store.commit('player/CHANGE_MONEY', { change: this.node.room.value })
 
       this.roomComplete = true
+    },
+    handleRoomAnimComplete () {
+      this.roomAnimComplete = true
     }
   }
 }

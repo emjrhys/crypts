@@ -1,6 +1,7 @@
 <template lang='pug'>
 CBox(
-  minW='20rem'
+  w='100%'
+  maxW='20rem'
   :style='cardStyle'
   pt='3'
   px='5'
@@ -11,8 +12,15 @@ CBox(
       CHeading(size='sm')
         | Level {{ level }}
 
-      CText(fontSize='sm' fontWeight='600' :style='walletStyle')
-        | {{ $formatCurrency(money) }}
+      CFlex(align='center')
+        CText(fontSize='sm' fontWeight='600' :style='walletStyle')
+          | {{ $formatCurrency(money) }}
+
+        CText(fontSize='xs' fontWeight='600' :style='walletStyle' ml='2')
+          | 🗝️
+
+        CText(fontSize='sm' fontWeight='600' :style='walletStyle' ml='2')
+          | {{ keys }}
     
     CProgress(
       :value='progressToNextLevel' 
@@ -34,7 +42,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('player', ['level', 'xp', 'xpToNextLevel', 'xpToPrevLevel', 'money']),
+    ...mapState('player', ['level', 'xp', 'xpToNextLevel', 'xpToPrevLevel', 'money', 'keys']),
     progressToNextLevel () {
       return (this.xp - this.xpToPrevLevel) / (this.xpToNextLevel - this.xpToPrevLevel) * 100
     },
