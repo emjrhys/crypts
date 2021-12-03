@@ -30,6 +30,7 @@ CThemeProvider
           py='4'
           px='5'
         )
+          //- Back to crypts button
           CBox
             nuxt-link(v-if='$route.name !== "index"' to='/')
               CButton(size='sm' pl='1')
@@ -37,15 +38,19 @@ CThemeProvider
                 | Crypts
 
 
-          CFlex(
-            align='center'
-          )
-            //- Shop button
-            CButton(size='sm' disabled)
-              CText(mr='2')
-                | 🛍️
-              CText
-                | Shop
+          //- Shop button
+          CButton(size='sm' @click='clearSaveData')
+            CText
+              | Reset
+          
+          //- Shop button
+          CButton(size='sm' disabled)
+            CText(mr='2')
+              | 🛍️
+            CText
+              | Shop
+
+          
 </template>
 
 <script>
@@ -67,31 +72,11 @@ export default {
     CBox,
     PlayerCard
   },
-  data () {
-    return {
-      showModal: false,
-      mainStyles: {
-        dark: {
-          bg: 'gray.700',
-          color: 'whiteAlpha.900'
-        },
-        light: {
-          bg: 'white',
-          color: 'gray.900'
-        }
-      }
-    }
-  },
-  computed: {
-    colorMode () {
-      return this.$chakraColorMode()
+  methods: {
+    clearSaveData () {
+      localStorage.removeItem('crypts_save_data')
+      window.location.href = '/'
     },
-    theme () {
-      return this.$chakraTheme()
-    },
-    toggleColorMode () {
-      return this.$toggleColorMode
-    }
-  },
+  }
 }
 </script>

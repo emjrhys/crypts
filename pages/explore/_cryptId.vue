@@ -17,16 +17,14 @@ CFlex(
     justify='center'
     align='center'
   )
-    CButton(
+    ActionArea(
       v-if='northDoor'
-      display='flex'
-      justify='center'
-      align='center'
       :style='northSouthDoorStyle'
+      type='door'
+      health='1'
       p='0'
       @click='currentCoords.y--'
     )
-      | 🚪
 
   CFlex(
     flex='1' 

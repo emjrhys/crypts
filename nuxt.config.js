@@ -38,7 +38,7 @@ export default {
     '~/plugins/log-alerts',
     '~/plugins/popups',
     '~/plugins/names',
-    '~/plugins/crypts',
+    '~/plugins/crypt-generator',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

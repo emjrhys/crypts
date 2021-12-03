@@ -3,6 +3,7 @@ CFlex(
   direction='column'
   justify='space-between'
   align='stretch'
+  v-bind="mainStyles[colorMode]"
 )
   CHeading(
     textAlign='center'
@@ -30,12 +31,37 @@ import CryptCard from '~/components/CryptCard'
 
 export default {
   name: 'Home',
+  inject: ['$chakraColorMode', '$toggleColorMode'],
   components: {
     CryptCard,
+  },
+  data () {
+    return {
+      showModal: false,
+      mainStyles: {
+        dark: {
+          bg: 'gray.700',
+          color: 'whiteAlpha.900'
+        },
+        light: {
+          bg: 'white',
+          color: 'gray.900'
+        }
+      }
+    }
   },
   computed: {
     ...mapState('player', ['money']),
     ...mapState('crypts', ['crypts', 'cryptSlots']),
+    colorMode () {
+      return this.$chakraColorMode()
+    },
+    theme () {
+      return this.$chakraTheme()
+    },
+    toggleColorMode () {
+      return this.$toggleColorMode
+    }
   },
   mounted () {
     if (this.$store.getters['crypts/getCryptCount']() === 0) {

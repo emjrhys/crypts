@@ -47,17 +47,15 @@ export default ({ app, store }, inject) => {
 
   const generateNewRoom = (depth, cumulativeValue, parentType, nominalDepth) => {
     const rollForRoom = (depth, nominalDepth, parentType) => {
-      let baseChance = 0.5
+      let baseChance = 2
       if (parentType !== null) {
-        baseChance += 0.1
+        baseChance += 1
 
-        if (depth === 0) {
-          if (parentType === 'crate')
-            baseChance += 0.25
-        }
+        if (parentType === 'crate')
+          baseChance += 1
       }
 
-      baseChance = baseChance ** (nominalDepth + 1)
+      baseChance = (baseChance / 5) ** (nominalDepth + 1)
 
       const typeRollers = {
         explore: {
@@ -65,16 +63,16 @@ export default ({ app, store }, inject) => {
           required: (() => nominalDepth === 0)()
         },
         shrine: {
-          roll: () => depth === 1 && Math.random() <= (baseChance / 5)
+          roll: () => depth === 1 && Math.random() <= baseChance
         },
         crate: {
-          roll: () => depth >= 1 && depth <= 2 && Math.random() <= (baseChance / 3)
+          roll: () => depth >= 1 && depth <= 2 && Math.random() <= baseChance
         },
         key: {
-          roll: () => depth === 0 && Math.random() <= ((baseChance + (parentType === 'crate') ? 0.25 : 0) / 5)
+          roll: () => depth === 0 && Math.random() <= baseChance
         },
         vase: {
-          roll: () => depth === 0 && Math.random() <= ((baseChance + (parentType === 'crate') ? -0.1 : 0.25) / 2)
+          roll: () => depth === 0 && Math.random() <= baseChance
         },
       }
       
